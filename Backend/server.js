@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-app.use(require('./app/routes'));
+require('./app/routes')(app);
 
 var router=express.Router();
 
@@ -23,3 +23,5 @@ app.use(router);
 app.listen(port, () => {
   console.log('We are live on ' + port);
 });
+
+exports = module.exports = app;
