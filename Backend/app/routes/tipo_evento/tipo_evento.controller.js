@@ -9,8 +9,10 @@
 
 'use strict';
 
-  
-  const Tipo_Evento = require("../../../models/tipo_evento");
+var mongoose = require('mongoose');
+var router=require('express').Router();
+var Tipo_Evento = mongoose.model('tipo_evento');
+//const Tipo_Evento = require("../../../models/tipo_evento");
 
 // Get list of things
 function createRouteConfigs(app) {
