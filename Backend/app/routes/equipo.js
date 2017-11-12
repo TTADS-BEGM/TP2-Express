@@ -29,18 +29,40 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
+//CREATE
+//NO ESTA FUNCIONANDO
 router.post('/', (req, res, next) => {
-  let id=req.body.id;
-  let name=req.body.name;
-  res.send("post equipo:"+id+" - name:"+name);
-    //next();
+  let equipo = new Equipo(req.body);
+  equipo.id_equipo = req.body.id_equipo;
+  equipo.nombre = req.body.nombre; 
+  equipo.save((err, createTipoEvento) => {
+    if(err) {
+      res.status(500).send(err)
+    }
+    res.status(200).send(createTipoEvento)
+  })
 });
 
+//UPDATE
+//PRIMERO HACER ANDAR EL CREATE. DESPUES VER ESTE.
 router.put('/:id', (req, res, next) => {
-  let id = req.params.id
-  let name=req.body.name;
-  res.send("put equipo:"+id+" - name:"+name);
-    //next();
+  Equipo.findOne({id_equipo: req.params.id}, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
+    } 
+    else {
+      result.id_equipo = req.body.id_equipo || result.id_equipo;
+      result.nombre = req.body.nombre || result.nombre;
+      result.save((err, result) => {
+        if(err) {
+          res.status(500).send(err)
+        }
+        else {
+          res.status(200).send(result);
+        }
+      });
+    }
+  });
 });
 
 //DELETE ONE
