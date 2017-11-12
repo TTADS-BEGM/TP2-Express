@@ -1,10 +1,10 @@
-var express        = require('express');
-var MongoClient    = require('mongodb').MongoClient;
-var bodyParser     = require('body-parser');
-var cors           = require('cors');
+var express = require('express');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var cors = require('cors');
 var methodOverride = require('method-override');
 
-var app            = express();
+var app = express();
 app.use(cors());
 
 const port = 3000;
@@ -12,6 +12,10 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
+
+mongoose.connect('mongodb://localhost/tp2');
+require('./models/equipo.js');
+
 
 app.use(require('./app/routes'));
 
