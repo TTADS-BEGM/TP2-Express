@@ -32,10 +32,8 @@ router.get('/:id', (req, res, next) => {
 //CREATE
 //NO ESTA FUNCIONANDO
 router.post('/', (req, res, next) => {
-  let equipo = new Equipo(req.body);
-  equipo.id_equipo = req.body.id_equipo;
-  equipo.nombre = req.body.nombre; 
-  equipo.save((err, createTipoEvento) => {
+  let nuevoEquipo = new Equipo(req.body);
+  nuevoEquipo.save((err, createTipoEvento) => {
     if(err) {
       res.status(500).send(err)
     }
@@ -44,7 +42,7 @@ router.post('/', (req, res, next) => {
 });
 
 //UPDATE
-//PRIMERO HACER ANDAR EL CREATE. DESPUES VER ESTE.
+//PRIMERO HACER ANDAR EL CREATE
 router.put('/:id', (req, res, next) => {
   Equipo.findOne({id_equipo: req.params.id}, function (err, result) {
     if (err) {
