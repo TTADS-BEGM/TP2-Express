@@ -1,8 +1,18 @@
+var mongoose = require('mongoose');
+var Equipo = mongoose.model('equipo');
 var router=require('express').Router()
 
 router.get('/', (req, res, next) => {
-  res.send("get equipos");
-    //next();
+    //function getAll(req, res) {
+      Equipo.find(function (err, result) {
+            if (err) {
+              res.status(500).send(err);
+            }
+            else {
+              res.json(result);
+            }
+        });
+      //}
 });
 
 router.get('/:id', (req, res, next) => {

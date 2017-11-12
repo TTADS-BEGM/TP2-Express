@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-mongoose.connect('mongodb://localhost/tp2');
+mongoose.connect('mongodb://localhost/tp2', { useMongoClient: true });
 require('./models/equipo.js');
 
 
