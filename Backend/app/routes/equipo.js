@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   Equipo.findOne({id_equipo: req.params.id}, function (err, result) {
     if (err) {
-      res.status(200).send(err);
+      res.status(500).send(err);
     } 
     if(result) {
       res.status(200).send(result);
@@ -79,11 +79,11 @@ router.delete('/:id', (req, res, next) => {
       res.status(200).send(err);
     }
     else if(result) {
-      result.remove((err, deleteTipoElemento) => {
+      result.remove((err, deleteEquipo) => {
         if(err) {
           res.status(500).send(err);
         }
-        res.status(200).send(deleteTipoElemento);
+        res.status(200).send(deleteEquipo);
       })
     }
     else {

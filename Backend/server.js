@@ -15,6 +15,7 @@ app.use(methodOverride());
 
 mongoose.connect('mongodb://localhost/tp2', { useMongoClient: true });
 require('./models/equipo.js');
+require('./models/partido.js');
 
 
 app.use(require('./app/routes'));
