@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
 
 //GET ONE
 router.get('/:id', (req, res, next) => {
-  Equipo.findOne({id_evento: req.params.id}, function (err, result) {
+  Evento.findOne({id_evento: req.params.id}, function (err, result) {
     if (err) {
       res.status(200).send(err);
     } 
