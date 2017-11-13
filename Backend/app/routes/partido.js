@@ -16,62 +16,65 @@ router.get('/', (req, res, next) => {
 
 //GET ONE
 router.get('/:id', (req, res, next) => {
-  Partido.findOne({id_partido: req.params.id}, function (err, result) {
+  Partido.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
       res.status(500).send(err);
     } 
     if(result) {
-      res.status(200).send(result);
       res.json(result);
     } else {
-      res.status(200).send("Ningún Equipo Encontrado");
+      res.send("Ningún Partido Encontrado");
     } 
   });
 });
 
 //CREATE
-//NO ESTA FUNCIONANDO
 router.post('/', (req, res, next) => {
-  /* let nuevoEquipo = new Equipo(req.body);
-  nuevoEquipo.save((err, createTipoEvento) => {
-    if(err) {
-      res.status(500).send(err)
-    }
-    res.status(200).send(createTipoEvento)
-  }) */
-
-  let fecha_horaNuevo=req.body.fecha_hora;
-  let equipo_localNuevo=req.body.equipo_local;
-  let equipo_visitanteNuevo=req.body.equipo_visitante;
+  let fecha_hora=req.body.fecha_hora;
+  let equipo_local =req.body.equipo_local;
+  let equipo_visitante = req.body.equipo_visitante;
+/*   let eventos = req.body.eventos;  SE AGREGAN DESPUES
+ */  
   var partidoNuevo = new Partido({
-      fecha_hora: fecha_horaNuevo,
-      equipo_local: equipo_localNuevo,
-      equipo_visitante: equipo_visitanteNuevo,
-  });
-  partidoNuevo.save();
-  res.send("Partido agregado: " + partidoNuevo);
+      fecha_hora: fecha_hora,
+      equipo_local: equipo_local,
+      equipo_visitante: equipo_visitante
+  })
+  partidoNuevo.save((err) => {
+    if(err){
+      res.send(err);
+    }
+    else {
+      res.send(partidoNuevo);
+    }
+  })
 });
 
 //UPDATE
-//PRIMERO HACER ANDAR EL CREATE
-router.put('/:id', (req, res, next) =>{
-    let query = {"_id": req.params.id};
-    let fecha_hora = req.body.fecha_hora;
-    let equipo_local = req.body.equipo_local;
-    let equipo_visitante = req.body.equipo_visitante;
-    Partido.findOneAndUpdate(query, {$set: {fecha_hora: fecha_hora, equipo_local:equipo_local, equipo_visitante:equipo_visitante}},{new: true},function(err, team){
-        if(err){
-            res.send("Error");
+router.put('/:id', (req, res, next) => {
+  Partido.findOne({_id: req.params.id}, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
+    } 
+    else {
+      result.fecha_hora = req.body.fecha_hora;
+      result.equipo_local = req.body.equipo_local;
+      result.equipo_visitante = req.body.equipo_visitante;
+      result.save((err, result) => {
+        if(err) {
+          res.status(500).send(err)
         }
-        else{
-            res.send(Partido);                
+        else {
+          res.status(200).send(result);
         }
-    });
-})
+      });
+    }
+  });
+});
 
 //DELETE ONE
 router.delete('/:id', (req, res, next) => {
-  Partido.findOne({id_partido: req.params.id}, function (err, result) {
+  Partido.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
       res.status(500).send(err);
     }
