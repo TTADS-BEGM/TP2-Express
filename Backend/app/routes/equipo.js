@@ -51,7 +51,7 @@ router.put('/:id', (req, res, next) => {
       res.status(500).send(err);
     } 
     else {
-      result.nombre = req.body.nombre;
+      result.nombre = req.body.nombre || result.nombre;
       result.save((err, result) => {
         if(err) {
           res.status(500).send(err)
