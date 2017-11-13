@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { DetallePartidoComponent } from './detalle-partido/detalle-partido.component';
 import { RouterModule }   from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
+import { HttpModule } from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {HttpClientModule} from '@angular/common/http';
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     RouterModule.forRoot([
       {
         path: 'detalle/:id',
