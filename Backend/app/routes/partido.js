@@ -57,9 +57,9 @@ router.put('/:id', (req, res, next) => {
       res.status(500).send(err);
     } 
     else {
-      result.fecha_hora = req.body.fecha_hora;
-      result.equipo_local = req.body.equipo_local;
-      result.equipo_visitante = req.body.equipo_visitante;
+      result.fecha_hora = req.body.fecha_hora || result.fecha_hora;
+      result.equipo_local = req.body.equipo_local || result.equipo_local;
+      result.equipo_visitante = req.body.equipo_visitante || result.equipo_visitante;
       result.save((err, result) => {
         if(err) {
           res.status(500).send(err)

@@ -33,10 +33,12 @@ router.post('/', (req, res, next) => {
   let fecha_horaNuevo = req.body.fecha_hora;
   let partidoNuevo = req.body.partido;
   let tipo_eventoNuevo = req.body.tipo_evento;
+  let equipoNuevo = req.body.equipo;
   var eventoNuevo = new Evento({
       fecha_hora: fecha_horaNuevo,
       partido: partidoNuevo,
       tipo_evento: tipo_eventoNuevo,
+      equipo: equipoNuevo
   });
   eventoNuevo.save((err)=> {
     if(err){
@@ -48,16 +50,16 @@ router.post('/', (req, res, next) => {
 });
 
 //UPDATE
-//PRIMERO HACER ANDAR EL CREATE
 router.put('/:id', (req, res, next) =>{
     Evento.findOne({_id: req.params.id},function(err, result){
       if (err) {
         res.status(500).send(err);
       } 
       else {
-        result.fecha_hora = req.body.fecha_hora;
-        result.partido = req.body.partido;
-        result.tipo_evento = req.body.tipo_evento;
+        result.fecha_hora = req.body.fecha_hora || result.fecha_hora;
+        result.partido = req.body.partido || result.partido;
+        result.tipo_evento = req.body.tipo_evento || result.tipo_evento;
+        result.equipo = req.body.equipo || result.equipo;
         result.save((err, result) => {
           if(err) {
             res.status(500).send(err)
