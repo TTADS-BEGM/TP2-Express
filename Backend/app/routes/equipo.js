@@ -32,13 +32,22 @@ router.get('/:id', (req, res, next) => {
 //CREATE
 //NO ESTA FUNCIONANDO
 router.post('/', (req, res, next) => {
-  let nuevoEquipo = new Equipo(req.body);
+  /* let nuevoEquipo = new Equipo(req.body);
   nuevoEquipo.save((err, createTipoEvento) => {
     if(err) {
       res.status(500).send(err)
     }
     res.status(200).send(createTipoEvento)
-  })
+  }) */
+
+  let nombreNuevo=req.body.nombre;
+  //let id_equipo =req.body.id_equipo;
+  var equipoNuevo = new Equipo({
+      nombre: nombreNuevo,
+      //id_equipo: id_equipo,
+  });
+  equipoNuevo.save();
+  res.send("Equipo agregado: " + equipoNuevo);
 });
 
 //UPDATE
