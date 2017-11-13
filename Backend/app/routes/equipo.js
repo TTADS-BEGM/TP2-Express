@@ -41,10 +41,8 @@ router.post('/', (req, res, next) => {
   }) */
 
   let nombreNuevo=req.body.nombre;
-  //let id_equipo =req.body.id_equipo;
   var equipoNuevo = new Equipo({
       nombre: nombreNuevo,
-      //id_equipo: id_equipo,
   });
   equipoNuevo.save();
   res.send("Equipo agregado: " + equipoNuevo);
