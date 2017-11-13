@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Evento = mongoose.model('evento');
+var Partido = mongoose.model('partido');
 var router=require('express').Router()
 
 //GET ALL
@@ -43,8 +44,24 @@ router.post('/', (req, res, next) => {
   eventoNuevo.save((err)=> {
     if(err){
       res.send(err);
-    }else{
-      res.send(eventoNuevo);
+    }
+    else {
+      Partido.findOne({_id: req.body.partido}, function(err, result){
+        if(err){
+          res.send(err);
+        }
+        else {
+          result.eventos.push(eventoNuevo);
+          result.save((err, resultado) => {
+            if(err) {
+              res.status(500).send(err)
+            }
+            else {
+              res.send(eventoNuevo);
+            }
+          })
+        }
+      })
     }
   })
 });
