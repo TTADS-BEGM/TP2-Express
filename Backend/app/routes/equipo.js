@@ -68,7 +68,7 @@ router.put('/:id', (req, res, next) => {
 router.delete('/:id', (req, res, next) => {
   Equipo.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
-      res.status(200).send(err);
+      res.status(500).send(err);
     }
     else if(result) {
       result.remove((err, deleteEquipo) => {
