@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let p of partidos">
+   <a routerLink="/detalle/{{p._id}}"> {{p.equipo_local}} - {{p.equipo_visitante}} </a>
+  </li>
+</ul>
