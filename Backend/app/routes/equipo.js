@@ -16,48 +16,42 @@ router.get('/', (req, res, next) => {
 
 //GET ONE
 router.get('/:id', (req, res, next) => {
-  Equipo.findOne({id_equipo: req.params.id}, function (err, result) {
+  Equipo.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
       res.status(500).send(err);
     } 
     if(result) {
-      res.status(200).send(result);
       res.json(result);
     } else {
-      res.status(200).send("Ningún Equipo Encontrado");
+      res.send("Ningún Equipo Encontrado");
     } 
   });
 });
 
 //CREATE
-//NO ESTA FUNCIONANDO
 router.post('/', (req, res, next) => {
-  /* let nuevoEquipo = new Equipo(req.body);
-  nuevoEquipo.save((err, createTipoEvento) => {
-    if(err) {
-      res.status(500).send(err)
-    }
-    res.status(200).send(createTipoEvento)
-  }) */
-
   let nombreNuevo=req.body.nombre;
   var equipoNuevo = new Equipo({
       nombre: nombreNuevo,
-  });
-  equipoNuevo.save();
-  res.send("Equipo agregado: " + equipoNuevo);
+  })
+  equipoNuevo.save((err) => {
+    if(err){
+      res.send(err);
+    }
+    else {
+      res.send(equipoNuevo);
+    }
+  })
 });
 
 //UPDATE
-//PRIMERO HACER ANDAR EL CREATE
 router.put('/:id', (req, res, next) => {
-  Equipo.findOne({id_equipo: req.params.id}, function (err, result) {
+  Equipo.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
       res.status(500).send(err);
     } 
     else {
-      result.id_equipo = req.body.id_equipo || result.id_equipo;
-      result.nombre = req.body.nombre || result.nombre;
+      result.nombre = req.body.nombre;
       result.save((err, result) => {
         if(err) {
           res.status(500).send(err)
@@ -72,7 +66,7 @@ router.put('/:id', (req, res, next) => {
 
 //DELETE ONE
 router.delete('/:id', (req, res, next) => {
-  Equipo.findOne({id_equipo: req.params.id}, function (err, result) {
+  Equipo.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
       res.status(200).send(err);
     }
