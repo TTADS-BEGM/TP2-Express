@@ -10,7 +10,12 @@ router.get('/', (req, res, next) => {
   populate('equipo_visitante').
   populate({
     path: 'eventos',
-    populate: { path: 'eventos' }
+    populate: { path: 'equipo' },
+    
+  }).
+  populate({
+    path: 'eventos',
+    populate: { path: 'tipo_evento' }
   }).
   exec(function (err, partido) {
     if (err) {
@@ -32,8 +37,12 @@ router.get('/:id', (req, res, next) => {
     populate('equipo_local').
     populate('equipo_visitante').
     populate({
+    path: 'eventos',
+    populate: { path: 'equipo' },
+    }).
+    populate({
       path: 'eventos',
-      populate: { path: 'eventos' }
+      populate: { path: 'tipo_evento' }
     }).
     exec(function (err, partido) {
       if (err) {
