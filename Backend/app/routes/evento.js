@@ -45,40 +45,115 @@ router.get('/:id', (req, res, next) => {
 
 //CREATE
 router.post('/', (req, res, next) => {
-  let fecha_horaNuevo = req.body.fecha_hora;
-  let partidoNuevo = req.body.partido;
-  let tipo_eventoNuevo = req.body.tipo_evento;
-  let equipoNuevo = req.body.equipo;
-  var eventoNuevo = new Evento({
-      fecha_hora: fecha_horaNuevo,
-      partido: partidoNuevo,
-      tipo_evento: tipo_eventoNuevo,
-      equipo: equipoNuevo
-  });
-  eventoNuevo.save((err)=> {
+  Partido.findOne({_id: req.body.partido}, function(err, correcto){
     if(err){
       res.send(err);
     }
-    else {
-      Partido.findOne({_id: req.body.partido}, function(err, result){
+    else if (correcto) {
+      console.log(correcto)
+      let fecha_horaNuevo = req.body.fecha_hora;
+      let partidoNuevo = req.body.partido;
+      let tipo_eventoNuevo = req.body.tipo_evento;
+      let equipoNuevo = req.body.equipo;
+
+      var eventoNuevo = new Evento({
+        fecha_hora: fecha_horaNuevo,
+        partido: partidoNuevo,
+        tipo_evento: tipo_eventoNuevo,
+        equipo: equipoNuevo
+      })
+      eventoNuevo.save((err, eventoCreado)=> {
         if(err){
           res.send(err);
         }
         else {
-          result.eventos.push(eventoNuevo);
-          result.save((err, resultado) => {
-            if(err) {
-              res.status(500).send(err)
+          console.log(correcto.fecha_hora <= eventoCreado.fecha_hora);
+          
+          if(correcto.fecha_hora <= eventoCreado.fecha_hora) { 
+            correcto.fecha_hora.setHours(correcto.fecha_hora.getHours() + 2);
+            console.log(correcto.fecha_hora);
+            console.log(eventoCreado.fecha_hora);
+            if(correcto.fecha_hora >= eventoCreado.fecha_hora){
+              correcto.eventos.push(eventoCreado);
+              correcto.save((err, resultado) => {
+                if(err) {
+                  res.status(500).send(err)
+                }
+                else {
+                  res.send(eventoCreado);
+                }
+              })
             }
             else {
-              res.send(eventoNuevo);
-            }
-          })
+              eventoNuevo.remove((err, deleteEv) => {
+                if(err) {
+                  res.status(500).send(err);
+                }
+                else{
+                  res.status(200).send("El evento debe suceder dentro del horario del partido!!");
+                }
+              });
+            }  
+          }        
         }
-      })
+      });
     }
-  })
+    else {
+      res.send("No existe ese partido");
+    }
+  });
 });
+
+/* router.post('/', (req, res, next) => {
+  Partido.findOne({_id: req.body.partido}, function(err, correcto){
+    if(err){
+      res.send(err);
+    }
+    else {
+      if(correcto.fecha_hora <= Date.parse(req.body.fecha_hora) && 
+        correcto.fecha_hora.setSeconds(7200) >= Date.parse(req.body.fecha_hora)) {
+        let fecha_horaNuevo = req.body.fecha_hora;
+        let partidoNuevo = req.body.partido;
+        let tipo_eventoNuevo = req.body.tipo_evento;
+        let equipoNuevo = req.body.equipo;
+
+        var eventoNuevo = new Evento({
+          fecha_hora: fecha_horaNuevo,
+          partido: partidoNuevo,
+          tipo_evento: tipo_eventoNuevo,
+          equipo: equipoNuevo
+        })
+        eventoNuevo.save((err)=> {
+          if(err){
+            res.send(err);
+          }
+          else {
+            Partido.findOne({_id: req.body.partido}, function(err, result){
+              if(err){
+                res.send(err);
+              }
+              else {
+                result.eventos.push(eventoNuevo);
+                result.save((err, resultado) => {
+                  if(err) {
+                    res.status(500).send(err)
+                  }
+                  else {
+                    res.send(eventoNuevo);
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+      else {
+        res.send("El evento debe suceder dentro del horario del partido!!");
+      }
+    }
+  });
+}); */
+
 
 //UPDATE
 router.put('/:id', (req, res, next) =>{
