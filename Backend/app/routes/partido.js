@@ -4,28 +4,48 @@ var router=require('express').Router()
 
 //GET ALL
 router.get('/', (req, res, next) => {
-  Partido.find(function (err, result) {
+  Partido.
+  find().
+  populate('equipo_local').
+  populate('equipo_visitante').
+  populate({
+    path: 'eventos',
+    populate: { path: 'eventos' }
+  }).
+  exec(function (err, partido) {
     if (err) {
-      res.status(500).send(err);
+      res.send(err);
+    }
+    else if(!partido) {
+      res.send("Ningún partido encontrado");
     }
     else {
-      res.json(result);
+      res.json(partido);
     }
   });
 });
 
 //GET ONE
 router.get('/:id', (req, res, next) => {
-  Partido.findOne({_id: req.params.id}, function (err, result) {
-    if (err) {
-      res.status(500).send(err);
-    } 
-    if(result) {
-      res.json(result);
-    } else {
-      res.send("Ningún Partido Encontrado");
-    } 
-  });
+  Partido.
+    findOne({_id: req.params.id}).
+    populate('equipo_local').
+    populate('equipo_visitante').
+    populate({
+      path: 'eventos',
+      populate: { path: 'eventos' }
+    }).
+    exec(function (err, partido) {
+      if (err) {
+        res.send(err);
+      }
+      else if(!partido) {
+        res.send("Ningún partido encontrado");
+      }
+      else {
+        res.json(partido);
+      }
+    });
 });
 
 //CREATE

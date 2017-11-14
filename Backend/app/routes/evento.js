@@ -5,28 +5,42 @@ var router=require('express').Router()
 
 //GET ALL
 router.get('/', (req, res, next) => {
-  Evento.find(function (err, result) {
-    if (err) {
-      res.status(500).send(err);
-    }
-    else {
-      res.json(result);
-    }
-  });
+  Evento.
+    find().
+    populate('tipo_evento').
+    populate('partido').
+    populate('equipo').
+    exec(function (err, evento) {
+      if (err) {
+        res.send(err);
+      }
+      else if(!evento) {
+        res.send("Ningún evento encontrado");
+      }
+      else {
+        res.json(evento);
+      }
+    });
 });
 
 //GET ONE
 router.get('/:id', (req, res, next) => {
-  Evento.findOne({_id: req.params.id}, function (err, result) {
-    if (err) {
-      res.status(500).send(err);
-    } 
-    if(result) {
-      res.json(result);
-    } else {
-      res.send("Ningún Evento Encontrado");
-    } 
-  });
+  Evento.
+    findOne({_id: req.params.id}).
+    populate('tipo_evento').
+    populate('partido').
+    populate('equipo').
+    exec(function (err, evento) {
+      if (err) {
+        res.send(err);
+      }
+      else if(!evento) {
+        res.send("Ningún evento encontrado");
+      }
+      else {
+        res.json(evento);
+      }
+    });
 });
 
 //CREATE
