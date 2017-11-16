@@ -61,20 +61,18 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   let fecha_hora=req.body.fecha_hora;
   let equipo_local =req.body.equipo_local;
-  let equipo_visitante = req.body.equipo_visitante;
-/*   let eventos = req.body.eventos;  SE AGREGAN DESPUES
- */  
+  let equipo_visitante = req.body.equipo_visitante; 
   var partidoNuevo = new Partido({
       fecha_hora: fecha_hora,
       equipo_local: equipo_local,
       equipo_visitante: equipo_visitante
   })
-  partidoNuevo.save((err) => {
+  partidoNuevo.save((err, resultado) => {
     if(err){
       res.send(err);
     }
     else {
-      res.send(partidoNuevo);
+      res.send(resultado);
     }
   })
 });
@@ -85,7 +83,7 @@ router.put('/:id', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     } 
-    else {
+    else if (result) {
       result.fecha_hora = req.body.fecha_hora || result.fecha_hora;
       result.equipo_local = req.body.equipo_local || result.equipo_local;
       result.equipo_visitante = req.body.equipo_visitante || result.equipo_visitante;
@@ -97,6 +95,9 @@ router.put('/:id', (req, res, next) => {
           res.status(200).send(result);
         }
       });
+    }
+    else {
+      res.send("El partido que desea modificar no existe");
     }
   });
 });
