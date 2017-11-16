@@ -8,8 +8,11 @@ router.get('/', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     }
-    else {
+    else if (result) {
       res.json(result);
+    }
+    else {
+      res.send("No existe ningún equipo");
     }
   });
 });
@@ -23,7 +26,7 @@ router.get('/:id', (req, res, next) => {
     if(result) {
       res.json(result);
     } else {
-      res.send("Ningún Equipo Encontrado");
+      res.send("No existe el equipo buscado");
     } 
   });
 });
@@ -50,7 +53,7 @@ router.put('/:id', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     } 
-    else {
+    else if (result) {
       result.nombre = req.body.nombre || result.nombre;
       result.save((err, result) => {
         if(err) {
@@ -60,6 +63,9 @@ router.put('/:id', (req, res, next) => {
           res.status(200).send(result);
         }
       });
+    }
+    else {
+      res.send("El equipo que quiere modificar no existe");
     }
   });
 });
