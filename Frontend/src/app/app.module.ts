@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { PartidosComponent } from './partidos/partidos.component';
 import { FooterComponent } from './footer/footer.component';
@@ -22,6 +22,7 @@ import { HttpModule } from "@angular/http";
     BrowserModule,
     HttpClientModule,
     HttpModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot([
       {
         path: 'detalle/:id',
