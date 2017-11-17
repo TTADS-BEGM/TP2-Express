@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class PartidosComponent implements OnInit {
 
-  urlActivos: string = 'http://localhost:3000/api/partidos';
+  urlActivos: string = 'http://localhost:3000/api/partidos/active';
   partidos;
 
   constructor(private http: HttpClient) { }

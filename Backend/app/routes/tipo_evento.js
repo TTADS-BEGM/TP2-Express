@@ -8,8 +8,11 @@ router.get('/', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     }
-    else {
+    else if (result) {
       res.json(result);
+    }
+    else {
+      res.send("No existe ningún tipo de evento aún");
     }
   });
 });
@@ -34,31 +37,35 @@ router.post('/', (req, res, next) => {
   var tipo_eventoNuevo = new Tipo_evento({
       nombre: nombre
   })
-  tipo_eventoNuevo.save((err) => {
+  tipo_eventoNuevo.save((err, result) => {
     if(err){
       res.send(err);
     }
     else {
-      res.send(tipo_eventoNuevo);
+      res.send(result);
     }
   })
 });
+
 //UPDATE
 router.put('/:id', (req, res, next) => {
   Tipo_evento.findOne({_id: req.params.id}, function (err, result) {
     if (err) {
       res.status(500).send(err);
     } 
-    else {
+    else if (result) {
       result.nombre = req.body.nombre || result.nombre;
-      result.save((err, result) => {
+      result.save((err, resultado) => {
         if(err) {
           res.status(500).send(err)
         }
         else {
-          res.status(200).send(result);
+          res.status(200).send(resultado);
         }
       });
+    }
+    else {
+      res.send("No existe el tipo de evento que desea modificar");
     }
   });
 });

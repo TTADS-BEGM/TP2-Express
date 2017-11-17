@@ -1,3 +1,36 @@
-<p>
-  {{partido.fecha_hora}} - {{partido.equipo_local}} -{{partido.equipo_visitante}}
-</p>
+<hr>
+<div class="row background-mid">
+    <img src="{{partido.equipo_local.url}}" alt="" class="col-md-2 detalle-img">
+      <h3 class="detalle-title-equipo col-md-3">{{partido.equipo_local.nombre}}</h3>
+      <p class="detalle-title-versus col-md-2">VS</p>
+      <h3 class="detalle-title-equipo col-md-3">{{partido.equipo_visitante.nombre}}</h3>
+    <img src="{{partido.equipo_visitante.url}}" alt="" class="col-md-2 detalle-img">
+  <div *ngIf="partido.eventos.length != 0; then content else other_content" ></div>
+  <ng-template #content>
+    <h1 class="col-md-12 detalle-title">Resumen del Partido</h1>
+    <table class="table table-hover col-md-12 detalle-eventos"  *ngIf="partido.eventos.length != 0">
+      <thead>
+        <tr>
+          <th>Tiempo</th>
+          <th>Evento</th>
+          <th>Equipo</th>
+          <th>Descripcion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ev of partido.eventos">
+          <td>{{ ev.fecha_hora | date : 'HH:mm' : timezone}}</td>
+          <td>{{ev.tipo_evento.nombre}}</td>
+          <td *ngIf="ev.tipo_evento.nombre != 'Comienzo PT' && ev.tipo_evento.nombre != 'Fin PT' && ev.tipo_evento.nombre != 'Comienzo ST' && ev.tipo_evento.nombre != 'Fin ST'">{{ev.equipo.nombre}}</td>
+          <td>{{ev.descripcion}}</td> 
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+  <ng-template #other_content>
+    <p class="detalle-else">El partido no tiene eventos programados.</p>
+  </ng-template>  
+
+
+</div>
+<hr>

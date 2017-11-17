@@ -50,7 +50,6 @@ router.post('/', (req, res, next) => {
       res.send(err);
     }
     else if (correcto) {
-      console.log(correcto)
       let fecha_horaNuevo = req.body.fecha_hora;
       let partidoNuevo = req.body.partido;
       let tipo_eventoNuevo = req.body.tipo_evento;
@@ -68,14 +67,10 @@ router.post('/', (req, res, next) => {
         if(err){
           res.send(err);
         }
-        else {
-          console.log(correcto.fecha_hora <= eventoCreado.fecha_hora);
-          
+        else {          
           if(correcto.fecha_hora <= eventoCreado.fecha_hora) { 
             correcto.fecha_hora.setHours(correcto.fecha_hora.getHours() + 2);
-            console.log(correcto.fecha_hora);
-            console.log(eventoCreado.fecha_hora);
-            if(correcto.fecha_hora >= eventoCreado.fecha_hora){
+            if(correcto.fecha_hora >= eventoCreado.fecha_hora) {
               correcto.eventos.push(eventoCreado);
               correcto.save((err, resultado) => {
                 if(err) {
@@ -112,19 +107,22 @@ router.put('/:id', (req, res, next) =>{
       if (err) {
         res.status(500).send(err);
       } 
-      else {
+      else if (result) {
         result.fecha_hora = req.body.fecha_hora || result.fecha_hora;
         result.partido = req.body.partido || result.partido;
         result.tipo_evento = req.body.tipo_evento || result.tipo_evento;
         result.equipo = req.body.equipo || result.equipo;
-        result.save((err, result) => {
+        result.save((err, resultado) => {
           if(err) {
             res.status(500).send(err)
           }
           else {
-            res.status(200).send(result);
+            res.status(200).send(resultado);
           }
         });
+      }
+      else {
+        res.send("El evento que quiere modificar no existe");
       }
     });
 })
