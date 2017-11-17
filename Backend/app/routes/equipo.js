@@ -31,8 +31,10 @@ router.get('/:id', (req, res, next) => {
 //CREATE
 router.post('/', (req, res, next) => {
   let nombreNuevo=req.body.nombre;
+  let urlEscudo=req.body.url
   var equipoNuevo = new Equipo({
       nombre: nombreNuevo,
+      url: urlEscudo
   })
   equipoNuevo.save((err) => {
     if(err){
@@ -52,6 +54,7 @@ router.put('/:id', (req, res, next) => {
     } 
     else {
       result.nombre = req.body.nombre || result.nombre;
+      result.url = req.body.url || result.url;
       result.save((err, result) => {
         if(err) {
           res.status(500).send(err)

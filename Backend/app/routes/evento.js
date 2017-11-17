@@ -55,12 +55,14 @@ router.post('/', (req, res, next) => {
       let partidoNuevo = req.body.partido;
       let tipo_eventoNuevo = req.body.tipo_evento;
       let equipoNuevo = req.body.equipo;
+      let descripcionNuevo = req.body.descripcion;
 
       var eventoNuevo = new Evento({
         fecha_hora: fecha_horaNuevo,
         partido: partidoNuevo,
         tipo_evento: tipo_eventoNuevo,
-        equipo: equipoNuevo
+        equipo: equipoNuevo,
+        descripcion: descripcionNuevo
       })
       eventoNuevo.save((err, eventoCreado)=> {
         if(err){

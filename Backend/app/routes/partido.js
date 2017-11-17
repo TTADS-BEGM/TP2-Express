@@ -30,6 +30,36 @@ router.get('/', (req, res, next) => {
   });
 });
 
+//GET ALL ACTIVE GAMES
+router.get('/active', (req, res, next) => {
+  var today = new Date();
+  Partido.
+  where('fecha_hora').gt(today.getTime() - (6300000)).
+  lt(today.getTime() + (6300000)).
+  sort({fecha_hora: 'asc'}).
+  populate('equipo_local').
+  populate('equipo_visitante').
+  populate({
+    path: 'eventos',
+    populate: { path: 'equipo' }   
+  }).
+  populate({
+    path: 'eventos',
+    populate: { path: 'tipo_evento' }
+  })
+  .exec(function (err, partido) {
+    if (err) {
+      res.send(err);
+    }
+    else if(!partido) {
+      res.send("Ningún partido encontrado");
+    }
+    else {
+      res.json(partido);
+    }
+  });
+});
+
 //GET ONE
 router.get('/:id', (req, res, next) => {
   Partido.
@@ -39,10 +69,12 @@ router.get('/:id', (req, res, next) => {
     populate({
     path: 'eventos',
     populate: { path: 'equipo' },
+    options: { sort: { fecha_hora: 'asc' }}
     }).
     populate({
       path: 'eventos',
-      populate: { path: 'tipo_evento' }
+      populate: { path: 'tipo_evento' },
+      options: { sort: { fecha_hora: 'asc' }}
     }).
     exec(function (err, partido) {
       if (err) {
