@@ -1,5 +1,22 @@
-<ul>
-  <li *ngFor="let p of partidos">
-   <a routerLink="/detalle/{{p._id}}"> {{p.equipo_local}} - {{p.equipo_visitante}} </a>
-  </li>
+<hr>
+<ul class="ul-style background-mid">
+      <li *ngFor="let p of partidos" class="equipo-card">
+      <div class="row">
+          <div class="col-sm-4">
+            <h4 class="equipo-cartel"><a routerLink="#"> {{p.equipo_local.nombre}}</a></h4>
+            <img src="{{p.equipo_local.url}}" alt="" class="escudo-equipo">
+          </div>
+          <div class="col-sm-4 versus-cartel">
+            <p>{{ p.fecha_hora | date : 'medium' : timezone}}</p>
+            <a routerLink="/detalle/{{p._id}}" class="btn btn-primary btn-versus">Ver Resumen</a>
+          </div>
+          <div class="col-sm-4">
+              <h4 class="equipo-cartel"><a routerLink="#"> {{p.equipo_visitante.nombre}} </a></h4>
+              <img src="{{p.equipo_visitante.url}}" alt="" class="escudo-equipo">
+          </div>
+        </div>
+        <div class="line-divider">
+          <hr>
+        </div>
+      </li>
 </ul>

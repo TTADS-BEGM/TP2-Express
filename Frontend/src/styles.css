@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+.ul-style {
+    list-style: none;
+    padding: 0
+}
+.versus-cartel {
+    text-align: center;
+    margin-top: 9%;
+}
+.equipo-cartel {
+    text-align: center;
+    margin-top: 8%;
+    margin-bottom: 10%;
+    color: black;
+}
+.equipo-cartel a{
+    color: black;
+}
+.background {
+    background-color: blueviolet;
+}
+.line-divider {
+    background-color: blueviolet;
+    padding-top: 1px;
+}
+.background-mid {
+    background-color: white;
+}
+.header-img {
+    width: 15%;
+    height: 15%;
+    position: relative;
+}
+.header-container {
+    margin-top: 2%;
+}
+.escudo-equipo {
+    width: 63%;
+    height: 63%;
+    margin-left: 20%;
+}
+.btn-versus {
+    background-color: blueviolet;
+    border-color: blueviolet;
+}
