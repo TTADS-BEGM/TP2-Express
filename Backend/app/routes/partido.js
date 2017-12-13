@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
     if (err) {
       res.send(err);
     }
-    else if(!partido) {
+    else if(partido.length == 0) {
       res.send("Ningún partido encontrado");
     }
     else {
@@ -34,8 +34,8 @@ router.get('/', (req, res, next) => {
 router.get('/active', (req, res, next) => {
   var today = new Date();
   Partido.
-  where('fecha_hora').gt(today.getTime() - (6300000)).
-  lt(today.getTime() + (6300000)).
+  where('fecha_hora').gt(today.getTime() - (6300000)).    //105*60*1000
+  lt(today.getTime()).
   sort({fecha_hora: 'asc'}).
   populate('equipo_local').
   populate('equipo_visitante').
@@ -51,7 +51,7 @@ router.get('/active', (req, res, next) => {
     if (err) {
       res.send(err);
     }
-    else if(!partido) {
+    else if(partido.length == 0) {
       res.send("Ningún partido encontrado");
     }
     else {
@@ -80,7 +80,7 @@ router.get('/:id', (req, res, next) => {
       if (err) {
         res.send(err);
       }
-      else if(!partido) {
+      else if(partido == null) {
         res.send("Ningún partido encontrado");
       }
       else {
@@ -146,7 +146,7 @@ router.delete('/:id', (req, res, next) => {
           res.status(500).send(err);
         }
         res.status(200).send(deletePartido);
-      })
+      });
     }
     else {
       res.send("No existe ese Partido");

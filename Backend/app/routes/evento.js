@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
       if (err) {
         res.send(err);
       }
-      else if(!evento) {
+      else if(evento.length == 0) {
         res.send("Ningún evento encontrado");
       }
       else {
@@ -34,7 +34,7 @@ router.get('/:id', (req, res, next) => {
       if (err) {
         res.send(err);
       }
-      else if(!evento) {
+      else if(evento == null) {
         res.send("Ningún evento encontrado");
       }
       else {
@@ -71,7 +71,7 @@ router.post('/', (req, res, next) => {
           if(correcto.fecha_hora <= eventoCreado.fecha_hora) { 
             correcto.fecha_hora.setHours(correcto.fecha_hora.getHours() + 2);
             if(correcto.fecha_hora >= eventoCreado.fecha_hora) {
-              correcto.eventos.push(eventoCreado);
+              correcto.eventos.push(eventoCreado._id);
               correcto.save((err, resultado) => {
                 if(err) {
                   res.status(500).send(err)
@@ -81,7 +81,7 @@ router.post('/', (req, res, next) => {
                 }
               })
             }
-            else {
+            else { //Si el evento es despues del partido
               eventoNuevo.remove((err, deleteEv) => {
                 if(err) {
                   res.status(500).send(err);
@@ -91,7 +91,17 @@ router.post('/', (req, res, next) => {
                 }
               });
             }  
-          }        
+          } 
+          else { //Si el evento es antes del partido
+            eventoNuevo.remove((err, deleteEv) => {
+              if(err) {
+                res.status(500).send(err);
+              }
+              else{
+                res.status(200).send("El evento debe suceder dentro del horario del partido!!");
+              }
+            });
+          }       
         }
       });
     }
@@ -102,6 +112,7 @@ router.post('/', (req, res, next) => {
 });
 
 //UPDATE
+//El partido del evento no se puede modificar. Es ilogico
 router.put('/:id', (req, res, next) =>{
     Evento.findOne({_id: req.params.id},function(err, result){
       if (err) {
@@ -109,7 +120,6 @@ router.put('/:id', (req, res, next) =>{
       } 
       else if (result) {
         result.fecha_hora = req.body.fecha_hora || result.fecha_hora;
-        result.partido = req.body.partido || result.partido;
         result.tipo_evento = req.body.tipo_evento || result.tipo_evento;
         result.equipo = req.body.equipo || result.equipo;
         result.save((err, resultado) => {
@@ -134,7 +144,7 @@ router.delete('/:id', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     }
-    else if(result) {                                                                                               
+    else if(result != null) {                                                                                               
       result.remove((err, deleteEvento) => {
         if(err) {
           res.status(500).send(err);

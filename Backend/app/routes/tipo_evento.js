@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     }
-    else if (result) {
+    else if (result.length != 0) {
       res.json(result);
     }
     else {
@@ -23,7 +23,7 @@ router.get('/:id', (req, res, next) => {
     if (err) {
       res.status(500).send(err);
     } 
-    if(result) {
+    if(result != null) {
       res.json(result);
     } else {
       res.send("Ningún Tipo de evento Encontrado");
@@ -81,8 +81,10 @@ router.delete('/:id', (req, res, next) => {
         if(err) {
           res.status(500).send(err);
         }
-        res.status(200).send(deleteTipo_evento);
-      })
+        else {
+          res.status(200).send(deleteTipo_evento);
+        }
+      });
     }
     else {
       res.send("No existe ese tipo de evento");
